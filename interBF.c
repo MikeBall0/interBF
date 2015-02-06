@@ -1,24 +1,18 @@
 #include <stdio.h>
-
 char t[999], i[999], *h = t, *p = i; // t is the tape, i is the instruction set, h is the read/write head, p is the program counter
-
 int isLegalBFChar(char c) {
 	return c == '[' || c == ']' || c == '>' || c == '<' || c == '+' || c == '-' || c == '.' || c == ',';
 }
-
 void memclear(void*mem, int blockSize) {
 	while(--blockSize >= 0) *((char*)mem + blockSize) = 0;
 }
-
 void g() { // gobble a loop because we were 0
-	int d = 1;
-	char c;
+	int d = 1, c;
 	while(c = *p) {
 		if (c == '[') d ++; else if (c == ']') if (--d == 0) break;
 		p ++;
 	}
 }
-
 void q(char*r) { // parse BF, r is the jump pointer
 	while(*p) { // while we have a valid instruction
 		switch(*p) {
@@ -34,7 +28,6 @@ void q(char*r) { // parse BF, r is the jump pointer
 		p ++; // next instruction
 	}
 }
-
 int main(int argc, char**argv) {
 	FILE*in;
 	if (argc > 1) in = fopen(argv[1], "r"); else in = stdin;
@@ -54,9 +47,7 @@ int main(int argc, char**argv) {
 				q(p); // execute
 				memclear(i, sizeof(char)*(p-i)); // clear the instruction memory
 				p = i; // back to the start
-			} else {
-				putchar(':'); // prompt for more input
-			}
+			} else putchar(':'); // prompt for more input
 			if (c < 0) return 0; // EOF
 		}
 	}
